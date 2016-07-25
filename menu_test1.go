@@ -31,14 +31,19 @@ func init() {
 		log.Println(err)
 	}
 	initconf()
+
 	http.HandleFunc("/wx_callback", controller.WxCallbackHandler)
+	// controller.MenuHandler()
+	http.HandleFunc("/page1", controller.OauthHandler)
+	http.HandleFunc("/page2", controller.Page2Handler)
+
 }
 
 func initconf() {
 	if ok, err := conf.GetValue("Server", "ListenPort"); err == nil {
 		port = ok
 	} else {
-		log.Println(err)
+		log.Printf("[Wranning :]  Use Default Port %s ", Port)
 	}
 
 }
