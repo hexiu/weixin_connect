@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"weixin_connect/controller"
+	"weixin_connect/models"
 	"weixin_connect/modules/initConf"
 )
 
@@ -31,6 +32,7 @@ func init() {
 		log.Println(err)
 	}
 	initconf()
+	models.RegisterDB()
 
 	http.HandleFunc("/wx_callback", controller.WxCallbackHandler)
 	// controller.MenuHandler()

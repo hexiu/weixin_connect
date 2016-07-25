@@ -106,6 +106,7 @@ func textMsgHandler(ctx *core.Context) {
 
 	msg := request.GetText(ctx.MixedMsg)
 	fmt.Println(msg)
+	msg.Content = fmt.Sprintln(msg)
 	resp := response.NewText(msg.FromUserName, msg.ToUserName, msg.CreateTime, msg.Content)
 	ctx.RawResponse(resp) // 明文回复
 	// ctx.AESResponse(resp, 0, "", nil) // aes密文回复
@@ -113,6 +114,11 @@ func textMsgHandler(ctx *core.Context) {
 
 func defaultMsgHandler(ctx *core.Context) {
 	log.Printf("收到消息:\n%s\n", ctx.MsgPlaintext)
+	msg := ctx.MixedMsg
+	msg.Content = fmt.Sprintln(msg)
+	resp := response.NewText(msg.FromUserName, msg.ToUserName, msg.CreateTime, msg.Content)
+	ctx.RawResponse(resp)
+
 	ctx.NoneResponse()
 }
 
