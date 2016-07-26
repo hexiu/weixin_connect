@@ -4,8 +4,8 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	"time"
-	"zypc_submit/modules"
+	// "time"
+	"weixin_connect/modules/initConf"
 )
 
 const (
@@ -29,46 +29,57 @@ var (
 var engine *xorm.Engine
 
 type User struct {
-	UserId    int64 `xorm:"index"`
-	UserName  string
-	Password  string
-	Time      time.Time `xorm:"index"`
-	Email     string
-	Telnumber string
-	Flag      int
+	Uid                int64 `xorm:"index"`
+	Wid                string
+	OpenId             string
+	Username           string
+	Password           string
+	Email              string
+	Telnumber          string
+	TotalConsumption   float64
+	FileSavePath       string
+	UploadFileNum      int64
+	PrintFileNum       int64
+	CreateTime         int64 `xorm:"index"`
+	UpdateTime         int64 `xorm:"index"`
+	NearUpdateFileTime int64 `xorm:"index"`
+	Flag               int
+	Nickname           string
+	Sex                int
+	Language           string
+	City               string
+	Province           string
+	Country            string
 }
 
-type Topic struct {
-	UserId  int64 `xorm:"index"`
-	Content string
-	Flag    int
-	Time    time.Time `xorm:"index"`
+type FileInfo struct {
+	Fid            int64 `xorm:"index"`
+	Wid            string
+	FileWherePath  string //标识文件存储位置：在互联网还是微信端。
+	FileName       string
+	FileReName     string
+	FileUploadDate string
+	FilePrintTime  string
+	FilePayInfo    bool
+	FileType       string
+	MediaID        string
+	FileUrl        string
+	Flag           int
+	FileUploadTime int64 `xorm:"index"`
 }
 
-type Infomation struct {
-	UserId int64 `xorm:"index"`
-	Flag   int64
-	Info1  string
-	Info2  string
-	Info3  string
-	Info4  string
-	Info5  string
-	Info6  string
-	Info7  string
-	Info8  string
-	Info9  string
-	Info10 string
-	Info11 string
-	Info12 string
-	Info13 string
-	Info14 string
-	Info15 string
-	Info16 string
-	Info17 string
-	Info18 string
-	Info19 string
-	Info20 string
-	Time   time.Time `xorm:"index"`
+type PayInfo struct {
+	Zid           int64 `xorm:"index"`
+	Wid           string
+	PrintFile     string
+	PrintFiletype string
+	PrintFileUrl  string
+	PrintFiletime string
+	PayMoney      float64
+	PayTime       int64 `xorm:"index"`
+	CreateTime    int64 `xorm:"index"`
+	PrintOk       bool
+	PayOk         bool
 }
 
 func init() {
@@ -80,7 +91,7 @@ func init() {
 }
 
 func initconf() (err error) {
-	conf, err := modules.InitConf()
+	conf, err := initConf.InitConf()
 	if err != nil {
 		return err
 	}
@@ -139,18 +150,19 @@ func RegisterDB() (err error) {
 
 	fmt.Println(engine.Ping())
 
-	if ok, _ := engine.IsTableExist("user"); !ok {
+	if ok, _ := engine.IsTableExist("User"); !ok {
 		engine.CreateTables(new(User))
 	}
 
-	if ok, _ := engine.IsTableExist("topic"); !ok {
-		engine.CreateTables(new(Topic))
+	if ok, _ := engine.IsTableExist("FileInfo"); !ok {
+		engine.CreateTables(new(FileInfo))
 	}
 
-	if ok, _ := engine.IsTableExist("infomation"); !ok {
-		engine.CreateTables(new(Infomation))
+	if ok, _ := engine.IsTableExist("PayInfo"); !ok {
+		engine.CreateTables(new(PayInfo))
 	}
 
 	defer engine.Close()
 	return nil
+
 }

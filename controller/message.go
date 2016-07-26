@@ -136,5 +136,9 @@ func menuClickEventHandler(ctx *core.Context) {
 
 func defaultEventHandler(ctx *core.Context) {
 	log.Printf("收到事件:\n%s\n", ctx.MsgPlaintext)
+	if ctx.MixedMsg.EventType == "subscribe" {
+		UserAddHandler(ctx)
+	}
+
 	ctx.NoneResponse()
 }
