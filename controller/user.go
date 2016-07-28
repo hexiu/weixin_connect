@@ -1,7 +1,7 @@
 package controller
 
 import (
-	// "fmt"
+	"fmt"
 	"github.com/chanxuehong/wechat.v2/mp/core"
 	"github.com/chanxuehong/wechat.v2/mp/user"
 
@@ -64,4 +64,13 @@ func userUpdateFromWeiXin(openId string, lang string) (userinfo *user.UserInfo, 
 		return nil, err
 	}
 	return userinfo, nil
+}
+
+func GetUser(openid string, wid string) (err error) {
+	getuser, err := models.GetUser(openid, wid)
+	if err != nil {
+		return err
+	}
+	fmt.Println(getuser)
+	return nil
 }

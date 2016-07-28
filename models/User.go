@@ -1,7 +1,8 @@
 package models
 
 import (
-	"fmt"
+	// "fmt"
+	"log"
 	// "time"
 )
 
@@ -100,7 +101,33 @@ func JudgeUser(user *User) (has bool, err error) {
 	if err != nil {
 		return false, err
 	}
-	fmt.Println(user, "judge user")
+	// fmt.Println(user, "judge user")
 	defer engine.Close()
 	return has, nil
+}
+
+func GetUser(openid string, wid string) (user *User, err error) {
+	connectDB()
+	user = &User{
+		Wid:    wid,
+		OpenId: openid,
+	}
+
+	has, err := engine.Get(user)
+	if has != true || err != nil {
+		log.Println("Models Modules UserHandler GetUser Error : ", err)
+		return nil, err
+	}
+	defer engine.Close()
+	return user, nil
+}
+
+func UpdateUserInfo(user *User) (err error) {
+	connectDB()
+	_, err = engine.Update(user)
+	if err != nil {
+		return err
+	}
+	defer engine.Close()
+	return nil
 }

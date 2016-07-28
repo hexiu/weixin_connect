@@ -110,6 +110,7 @@ func textMsgHandler(ctx *core.Context) {
 	resp := response.NewText(msg.FromUserName, msg.ToUserName, msg.CreateTime, msg.Content)
 	ctx.RawResponse(resp) // 明文回复
 	// ctx.AESResponse(resp, 0, "", nil) // aes密文回复
+	ProvideQrcode()
 }
 
 func defaultMsgHandler(ctx *core.Context) {
@@ -118,19 +119,17 @@ func defaultMsgHandler(ctx *core.Context) {
 	msg.Content = fmt.Sprintln(msg)
 	resp := response.NewText(msg.FromUserName, msg.ToUserName, msg.CreateTime, msg.Content)
 	ctx.RawResponse(resp)
-
+	AddMediaInfo(ctx)
 	ctx.NoneResponse()
 }
 
 func menuClickEventHandler(ctx *core.Context) {
-
 	log.Printf("收到菜单 click 事件:\n%s\n", ctx.MsgPlaintext)
-
 	event := menu.GetClickEvent(ctx.MixedMsg)
 	resp := response.NewText(event.FromUserName, event.ToUserName, event.CreateTime, "收到 click 类型的事件")
 	ctx.RawResponse(resp) // 明文回复
 	// ctx.AESResponse(resp, 0, "", nil) // aes密文回复
-	DeleteMenu()
+	// DeleteMenu()
 
 }
 

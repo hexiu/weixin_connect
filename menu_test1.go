@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"weixin_connect/controller"
 	"weixin_connect/models"
+	"weixin_connect/modules/NetSendPrintMsg"
 	"weixin_connect/modules/initConf"
 )
 
@@ -38,6 +39,7 @@ func init() {
 	// controller.MenuHandler()
 	http.HandleFunc("/page1", controller.OauthHandler)
 	http.HandleFunc("/page2", controller.Page2Handler)
+	go NetSendPrintMsg.StartServer()
 
 }
 

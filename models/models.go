@@ -55,14 +55,16 @@ type User struct {
 type FileInfo struct {
 	Fid            int64 `xorm:"index"`
 	Wid            string
+	OpenId         string
 	FileWherePath  string //标识文件存储位置：在互联网还是微信端。
 	FileName       string
 	FileReName     string
 	FileUploadDate string
-	FilePrintTime  string
+	FilePrintTime  int64
 	FilePayInfo    bool
 	FileType       string
-	MediaID        string
+	MediaId        string
+	MsgId          int64
 	FileUrl        string
 	Flag           int
 	FileUploadTime int64 `xorm:"index"`
@@ -71,6 +73,7 @@ type FileInfo struct {
 type PayInfo struct {
 	Zid           int64 `xorm:"index"`
 	Wid           string
+	OpenId        string
 	PrintFile     string
 	PrintFiletype string
 	PrintFileUrl  string
